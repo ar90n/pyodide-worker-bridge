@@ -18,11 +18,11 @@ Write Python with `TypedDict` annotations, run one command, and get fully typed 
 
 ```
   annotated Python module
-          │
-          ▼
-  ┌──────────────────┐
-  │ pyodide-bridge gen│   CLI (code generation)
-  └──────┬───────────┘
+         │
+         ▼
+  ┌────────────────────┐
+  │ pyodide-bridge gen │ CLI (code generation)
+  └──────┬─────────────┘
          │
     ┌────┴────┬──────────────┐
     ▼         ▼              ▼
