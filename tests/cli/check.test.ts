@@ -10,9 +10,7 @@ import os from "node:os";
 
 const testIR: ModuleIR = {
   moduleName: "test",
-  types: [
-    { kind: "literal", name: "Status", values: ["ok", "error"] },
-  ],
+  types: [{ kind: "literal", name: "Status", values: ["ok", "error"] }],
   functions: [
     {
       name: "run",

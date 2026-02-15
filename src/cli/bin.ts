@@ -110,7 +110,9 @@ async function main(): Promise<void> {
     }
 
     if (isCheck && !allUpToDate) {
-      console.error("\nGenerated files are not up-to-date. Run `pyodide-bridge gen` to regenerate.");
+      console.error(
+        "\nGenerated files are not up-to-date. Run `pyodide-bridge gen` to regenerate.",
+      );
       process.exit(1);
     }
 

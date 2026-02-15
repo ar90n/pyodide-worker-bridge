@@ -35,9 +35,9 @@ describe("mergeCliArgs", () => {
   });
 
   it("requires --pyodide-version when no config file", () => {
-    expect(() =>
-      mergeCliArgs(null, { input: "test.py", outdir: "out" }),
-    ).toThrow(ConfigValidationError);
+    expect(() => mergeCliArgs(null, { input: "test.py", outdir: "out" })).toThrow(
+      ConfigValidationError,
+    );
   });
 
   it("builds config from CLI args when no config file", () => {

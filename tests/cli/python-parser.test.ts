@@ -30,9 +30,9 @@ describe("parsePythonModule", () => {
   });
 
   it("throws PythonParseError for syntax errors", async () => {
-    await expect(
-      parsePythonModule(path.join(FIXTURES_DIR, "syntax-error.py")),
-    ).rejects.toThrow(PythonParseError);
+    await expect(parsePythonModule(path.join(FIXTURES_DIR, "syntax-error.py"))).rejects.toThrow(
+      PythonParseError,
+    );
   });
 
   it("throws for non-existent files", async () => {

@@ -78,17 +78,17 @@ function App() {
 
 ## Type Mapping
 
-| Python | TypeScript |
-|--------|------------|
-| `str` | `string` |
-| `int` / `float` | `number` |
-| `bool` | `boolean` |
-| `None` | `null` |
-| `list[T]` | `T[]` |
-| `dict[K, V]` | `Record<K, V>` |
-| `TypedDict` | `type { ... }` (with optional fields) |
-| `Literal["a", "b"]` | `"a" \| "b"` |
-| `Optional[T]` | `T \| undefined` |
+| Python              | TypeScript                            |
+| ------------------- | ------------------------------------- |
+| `str`               | `string`                              |
+| `int` / `float`     | `number`                              |
+| `bool`              | `boolean`                             |
+| `None`              | `null`                                |
+| `list[T]`           | `T[]`                                 |
+| `dict[K, V]`        | `Record<K, V>`                        |
+| `TypedDict`         | `type { ... }` (with optional fields) |
+| `Literal["a", "b"]` | `"a" \| "b"`                          |
+| `Optional[T]`       | `T \| undefined`                      |
 
 ## Quick Start
 
@@ -101,9 +101,7 @@ Create a config file (`pyodide-bridge.config.mjs`):
 ```js
 export default {
   pyodideVersion: "0.27.5",
-  modules: [
-    { input: "python/src/my_module.py", outdir: "src/generated" },
-  ],
+  modules: [{ input: "python/src/my_module.py", outdir: "src/generated" }],
   bundler: "vite",
   react: true,
 };
@@ -118,19 +116,19 @@ npm run dev                     # start your app
 
 ## Examples
 
-| Example | Stack | Description |
-|---------|-------|-------------|
-| [`examples/basic`](examples/basic) | React | Text analyzer -- word count, character frequency, summary |
-| [`examples/scientific`](examples/scientific) | React + numpy + scipy + matplotlib | Signal processing with SVG chart rendering |
-| [`examples/3d`](examples/3d) | React + numpy + Three.js | Parametric surface generation with WebGL rendering |
+| Example                                      | Stack                              | Description                                               |
+| -------------------------------------------- | ---------------------------------- | --------------------------------------------------------- |
+| [`examples/basic`](examples/basic)           | React                              | Text analyzer -- word count, character frequency, summary |
+| [`examples/scientific`](examples/scientific) | React + numpy + scipy + matplotlib | Signal processing with SVG chart rendering                |
+| [`examples/3d`](examples/3d)                 | React + numpy + Three.js           | Parametric surface generation with WebGL rendering        |
 
 ## Architecture
 
-| Layer | Technology | Role |
-|-------|-----------|------|
-| CLI | Node.js + Python subprocess | Parse annotations, emit TypeScript |
-| Runtime | Comlink + Pyodide CDN | Worker bootstrap, data conversion, error handling |
-| React | Hooks (`usePyodide`, `createBridgeHook`) | Lifecycle management, loading / error states |
+| Layer   | Technology                               | Role                                              |
+| ------- | ---------------------------------------- | ------------------------------------------------- |
+| CLI     | Node.js + Python subprocess              | Parse annotations, emit TypeScript                |
+| Runtime | Comlink + Pyodide CDN                    | Worker bootstrap, data conversion, error handling |
+| React   | Hooks (`usePyodide`, `createBridgeHook`) | Lifecycle management, loading / error states      |
 
 ## Project Structure
 

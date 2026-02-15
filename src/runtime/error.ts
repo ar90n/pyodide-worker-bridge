@@ -22,11 +22,7 @@ export class BridgeError extends Error {
  * @throws BridgeError if the result contains an error pattern
  */
 export function detectBridgeError(result: unknown): void {
-  if (
-    typeof result === "object" &&
-    result !== null &&
-    "error" in result
-  ) {
+  if (typeof result === "object" && result !== null && "error" in result) {
     const errorObj = (result as Record<string, unknown>).error;
     if (
       typeof errorObj === "object" &&

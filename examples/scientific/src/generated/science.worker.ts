@@ -5,7 +5,14 @@ import { bootstrapPyodide, deepConvertMaps, detectBridgeError } from "pyodide-br
 
 import pythonSource from "./science.py?raw";
 
-import type { SignalParams, SignalResult, FilterParams, FilterResult, PlotParams, PlotResult } from "./science.types.js";
+import type {
+  SignalParams,
+  SignalResult,
+  FilterParams,
+  FilterResult,
+  PlotParams,
+  PlotResult,
+} from "./science.types.js";
 
 export interface BridgeAPI {
   generate_signal(params: SignalParams): Promise<SignalResult>;
@@ -18,7 +25,7 @@ let pyodide: Awaited<ReturnType<typeof bootstrapPyodide>>;
 async function init(): Promise<void> {
   pyodide = await bootstrapPyodide({
     pyodideVersion: "0.27.5",
-    packages: ["numpy","scipy","matplotlib"],
+    packages: ["numpy", "scipy", "matplotlib"],
     pythonSource,
   });
 }
@@ -47,7 +54,7 @@ const api: BridgeAPI = {
     const jsResult = deepConvertMaps<PlotResult>(pyResult.toJs());
     detectBridgeError(jsResult);
     return jsResult;
-  }
+  },
 };
 
 init().then(() => {

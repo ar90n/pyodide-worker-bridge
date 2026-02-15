@@ -20,11 +20,11 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 
 ## 3. ターゲットユーザー
 
-| ペルソナ | 説明 |
-|---------|------|
-| **フロントエンド開発者** | React アプリに Python 計算ロジックを組み込みたいが、Pyodide/Comlink の低レベル実装は避けたい |
-| **データサイエンティスト** | Python で書いた分析ロジックをブラウザで動かしたいが、TypeScript の記述量を最小化したい |
-| **フルスタック開発者** | Python ↔ TypeScript の型安全な連携を効率的に実現したい |
+| ペルソナ                   | 説明                                                                                         |
+| -------------------------- | -------------------------------------------------------------------------------------------- |
+| **フロントエンド開発者**   | React アプリに Python 計算ロジックを組み込みたいが、Pyodide/Comlink の低レベル実装は避けたい |
+| **データサイエンティスト** | Python で書いた分析ロジックをブラウザで動かしたいが、TypeScript の記述量を最小化したい       |
+| **フルスタック開発者**     | Python ↔ TypeScript の型安全な連携を効率的に実現したい                                       |
 
 ## 4. ユーザーストーリー
 
@@ -35,6 +35,7 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 **So that** 手書きのグルーコードを排除し、型安全な Python ↔ TypeScript 連携を実現できる
 
 **受け入れ条件**:
+
 - [ ] `pyodide-bridge gen --input <file> --outdir <dir>` で 3 ファイル（`.types.ts`, `.worker.ts`, `.hooks.ts`）が生成される
 - [ ] Python の `TypedDict`, `Literal`, プリミティブ型が正しく TypeScript 型に変換される
 - [ ] `__bridge_exports__` に列挙された関数のみがブリッジ対象となる
@@ -47,6 +48,7 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 **So that** Pyodide のライフサイクル管理や状態管理を意識せずに開発できる
 
 **受け入れ条件**:
+
 - [ ] `usePyodide()` で Worker ライフサイクル（loading / ready / error）を管理できる
 - [ ] 各エクスポート関数に対応する `useXxx()` Hook が生成される
 - [ ] Hook は `{ result, error, isLoading, execute }` を返す
@@ -59,6 +61,7 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 **So that** Python 変更時に生成ファイルの更新漏れを検出できる
 
 **受け入れ条件**:
+
 - [ ] `pyodide-bridge gen --check` が、生成ファイルが最新でない場合に非ゼロ終了コードを返す
 - [ ] 差分がある場合、どのファイルが古いか表示される
 
@@ -69,6 +72,7 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 **So that** 機能単位でモジュールを分割し、保守性を高められる
 
 **受け入れ条件**:
+
 - [ ] 設定ファイル (`pyodide-bridge.config.ts`) で複数モジュールを定義できる
 - [ ] 各モジュールが独立した Worker として生成される
 - [ ] `pyodide-bridge gen` で全モジュールを一括生成できる
@@ -80,6 +84,7 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 **So that** 任意のフレームワークから Pyodide ブリッジを使える
 
 **受け入れ条件**:
+
 - [ ] `pyodide-bridge/runtime` から Worker ブートストラップ、データ変換、エラーハンドリングの機能が利用可能
 - [ ] React 依存のない純粋な TypeScript API が提供される
 
@@ -87,61 +92,64 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 
 ### 5.1 CLI (`pyodide-bridge gen`)
 
-| 機能 | 説明 |
-|------|------|
-| Python パース | Python AST を解析し、型定義・関数シグネチャ・メタデータを抽出 |
-| 型エミット | `.types.ts` を生成（TypedDict → interface, Literal → union, 型マッピング） |
+| 機能            | 説明                                                                              |
+| --------------- | --------------------------------------------------------------------------------- |
+| Python パース   | Python AST を解析し、型定義・関数シグネチャ・メタデータを抽出                     |
+| 型エミット      | `.types.ts` を生成（TypedDict → interface, Literal → union, 型マッピング）        |
 | Worker エミット | `.worker.ts` を生成（Pyodide CDN ロード、パッケージインストール、Comlink expose） |
-| Hooks エミット | `.hooks.ts` を生成（usePyodide, 関数別 Hook） |
-| チェックモード | `--check` フラグで生成ファイルの最新性を検証 |
-| 設定ファイル | `pyodide-bridge.config.ts` による一括設定 |
+| Hooks エミット  | `.hooks.ts` を生成（usePyodide, 関数別 Hook）                                     |
+| チェックモード  | `--check` フラグで生成ファイルの最新性を検証                                      |
+| 設定ファイル    | `pyodide-bridge.config.ts` による一括設定                                         |
 
 ### 5.2 ランタイム (`pyodide-bridge/runtime`)
 
-| 機能 | 説明 |
-|------|------|
+| 機能                    | 説明                                                            |
+| ----------------------- | --------------------------------------------------------------- |
 | Worker ブートストラップ | Pyodide CDN からのロード、micropip によるパッケージインストール |
-| データ変換 | `deepConvertMaps()` による Map → Object 再帰変換 |
-| エラーハンドリング | `BridgeError` 型の定義、Python エラー辞書の検出と変換 |
-| Comlink ヘルパー | Proxy-safe な setState ラッパー |
+| データ変換              | `deepConvertMaps()` による Map → Object 再帰変換                |
+| エラーハンドリング      | `BridgeError` 型の定義、Python エラー辞書の検出と変換           |
+| Comlink ヘルパー        | Proxy-safe な setState ラッパー                                 |
 
 ### 5.3 React バインディング (`pyodide-bridge/react`)
 
-| 機能 | 説明 |
-|------|------|
-| `usePyodide()` | Worker ライフサイクル管理（status: loading / ready / error） |
-| 関数別 Hook 生成 | 各ブリッジ関数に対応する `useXxx()` Hook |
+| 機能             | 説明                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| `usePyodide()`   | Worker ライフサイクル管理（status: loading / ready / error） |
+| 関数別 Hook 生成 | 各ブリッジ関数に対応する `useXxx()` Hook                     |
 
 ### 5.4 型マッピング
 
-| Python | TypeScript |
-|--------|------------|
-| `int`, `float` | `number` |
-| `str` | `string` |
-| `bool` | `boolean` |
-| `None` | `null` |
-| `list[T]` | `T[]` |
-| `dict[K, V]` | `Record<K, V>` |
-| `Optional[T]` | `T \| undefined` |
-| `Literal['a', 'b']` | `'a' \| 'b'` |
-| `Required[T]` | required field |
-| `NotRequired[T]` | optional field (`?`) |
-| `TypedDict` (total=True) | all fields required by default |
+| Python                    | TypeScript                     |
+| ------------------------- | ------------------------------ |
+| `int`, `float`            | `number`                       |
+| `str`                     | `string`                       |
+| `bool`                    | `boolean`                      |
+| `None`                    | `null`                         |
+| `list[T]`                 | `T[]`                          |
+| `dict[K, V]`              | `Record<K, V>`                 |
+| `Optional[T]`             | `T \| undefined`               |
+| `Literal['a', 'b']`       | `'a' \| 'b'`                   |
+| `Required[T]`             | required field                 |
+| `NotRequired[T]`          | optional field (`?`)           |
+| `TypedDict` (total=True)  | all fields required by default |
 | `TypedDict` (total=False) | all fields optional by default |
 
 ## 6. 非機能要件
 
 ### パフォーマンス
+
 - CLI のコード生成は単一モジュールで 1 秒以内に完了すること
 - ランタイムの `deepConvertMaps()` は 10MB のネストデータに対して 100ms 以内
 
 ### 互換性
+
 - Node.js 18+ (CLI)
 - Pyodide 0.26.x (ランタイム)
 - React 18+ (React バインディング)
 - バンドラー: Vite 5+, Webpack 5+, インラインブロブ
 
 ### 開発者体験
+
 - `npm install pyodide-bridge` のみで CLI・ランタイム・React バインディングすべて利用可能
 - TypeScript ファースト（すべての公開 API に型定義付き）
 
@@ -154,6 +162,7 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 ## 8. スコープ
 
 ### v1 スコープ内
+
 - コード生成 CLI（Python → TypeScript 型定義、Worker、Hooks）
 - ランタイムユーティリティ（Pyodide ブートストラップ、データ変換、エラーハンドリング）
 - React Hooks
@@ -162,6 +171,7 @@ Python モジュールに規約に従ったアノテーション（`TypedDict`, 
 - CI チェックモード (`--check`)
 
 ### v1 スコープ外
+
 - React 以外のフレームワークバインディング（Vue, Svelte, Solid）
 - ストリーミング / ジェネレータ関数サポート
 - SharedArrayBuffer ベースのゼロコピー転送
@@ -182,6 +192,7 @@ v1 スコープ外だが、実運用で必要になる可能性が高い機能�
 **背景**: 実運用では Python 側にもドメインロジックが成長し、単一ファイルでは管理しきれなくなる。`engine.py` が `from utils import helper` のように内部モジュールに分割されるケースへの対応が必要。
 
 **検討事項**:
+
 - Worker に複数 `.py` を渡す方式（zip/tar、複数 `?raw` の結合、Pyodide の仮想ファイルシステム書き込み）
 - `__bridge_sources__` のような追加ファイル指定メタデータ
 - エントリポイント `.py` からの依存解析による自動収集
@@ -191,6 +202,7 @@ v1 スコープ外だが、実運用で必要になる可能性が高い機能�
 **背景**: `__bridge_packages__` の手動管理が煩雑になる可能性がある。
 
 **検討事項**:
+
 - Python 標準ライブラリの判別（Python バージョン依存）
 - Pyodide 内蔵パッケージ（numpy, scipy 等）の判別（Pyodide バージョン依存）
 - 条件付き import（`try: import xxx`, `if TYPE_CHECKING:`）の扱い

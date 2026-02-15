@@ -2,16 +2,16 @@
 
 ## 1. 技術スタック
 
-| カテゴリ | 技術 | バージョン |
-|---------|------|----------|
-| 言語 | TypeScript | 5.x |
-| ランタイム | Node.js | 18+ |
-| パッケージマネージャー | npm | 10+ |
-| バンドラー | tsup | latest |
-| テスト | Vitest | latest |
-| フォーマッター | Prettier | latest |
-| Python パーサー | Python | 3.10+ |
-| Python テスト | pytest | latest |
+| カテゴリ               | 技術       | バージョン |
+| ---------------------- | ---------- | ---------- |
+| 言語                   | TypeScript | 5.x        |
+| ランタイム             | Node.js    | 18+        |
+| パッケージマネージャー | npm        | 10+        |
+| バンドラー             | tsup       | latest     |
+| テスト                 | Vitest     | latest     |
+| フォーマッター         | Prettier   | latest     |
+| Python パーサー        | Python     | 3.10+      |
+| Python テスト          | pytest     | latest     |
 
 ## 2. コーディング規約
 
@@ -38,12 +38,12 @@
 
 ## 3. ブランチ戦略
 
-| ブランチ | 用途 |
-|---------|------|
-| `main` | リリースブランチ。常にリリース可能な状態 |
-| `feat/<feature-name>` | 機能開発ブランチ |
-| `fix/<issue-description>` | バグ修正ブランチ |
-| `chore/<description>` | 設定変更・リファクタリング |
+| ブランチ                  | 用途                                     |
+| ------------------------- | ---------------------------------------- |
+| `main`                    | リリースブランチ。常にリリース可能な状態 |
+| `feat/<feature-name>`     | 機能開発ブランチ                         |
+| `fix/<issue-description>` | バグ修正ブランチ                         |
+| `chore/<description>`     | 設定変更・リファクタリング               |
 
 - `main` への直接コミットは禁止
 - PR はスカッシュマージ
@@ -71,6 +71,7 @@
 **scope**: `cli`, `runtime`, `react`, `parser`, `docs`
 
 **例**:
+
 ```
 feat(cli): add --check mode for CI validation
 fix(runtime): handle nested Map in deepConvertMaps
@@ -120,14 +121,15 @@ describe('deepConvertMaps', () => {
 エミッターのテストではスナップショットテストを使用する。
 
 ```typescript
-it('generates correct types from simple TypedDict', () => {
-  const ir = parseFixture('simple.py')
-  const output = emitTypes(ir)
-  expect(output).toMatchSnapshot()
-})
+it("generates correct types from simple TypedDict", () => {
+  const ir = parseFixture("simple.py");
+  const output = emitTypes(ir);
+  expect(output).toMatchSnapshot();
+});
 ```
 
 スナップショットの更新:
+
 ```bash
 npm test -- --update
 ```
@@ -143,6 +145,7 @@ npm run typecheck
 ```
 
 **tsup 設定のポイント**:
+
 - エントリポイント: `src/index.ts`, `src/runtime/index.ts`, `src/react/index.ts`, `src/cli/bin.ts`
 - 出力形式: ESM
 - 型定義生成: 有効 (`dts: true`)
@@ -169,15 +172,15 @@ npm run typecheck
 ```typescript
 // CLI はプロセス終了コードでエラーを伝える
 try {
-  await generate(config)
+  await generate(config);
 } catch (err) {
   if (err instanceof PythonParseError) {
-    console.error(`Parse error in ${err.file}:${err.line}: ${err.message}`)
-    process.exit(1)
+    console.error(`Parse error in ${err.file}:${err.line}: ${err.message}`);
+    process.exit(1);
   }
   // 予期しないエラー
-  console.error('Unexpected error:', err)
-  process.exit(2)
+  console.error("Unexpected error:", err);
+  process.exit(2);
 }
 ```
 
@@ -186,9 +189,12 @@ try {
 ```typescript
 // BridgeError はユーザーが catch できる構造化エラー
 class BridgeError extends Error {
-  constructor(public code: string, message: string) {
-    super(message)
-    this.name = 'BridgeError'
+  constructor(
+    public code: string,
+    message: string,
+  ) {
+    super(message);
+    this.name = "BridgeError";
   }
 }
 ```
@@ -197,7 +203,7 @@ class BridgeError extends Error {
 
 ```typescript
 // Hook はエラーを state として公開する (throw しない)
-const { result, error, isLoading } = useMyFunction(api, status)
+const { result, error, isLoading } = useMyFunction(api, status);
 if (error) {
   // error は BridgeError | Error
 }

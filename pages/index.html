@@ -1,106 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyodide-bridge — Examples</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyodide-bridge — Examples</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 4rem 1.5rem;
-    }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+          sans-serif;
+        background: #0d1117;
+        color: #e6edf3;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 4rem 1.5rem;
+      }
 
-    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+      h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
 
-    .subtitle {
-      color: #8b949e;
-      font-size: 1.1rem;
-      margin-bottom: 3rem;
-      text-align: center;
-      max-width: 36rem;
-      line-height: 1.5;
-    }
+      .subtitle {
+        color: #8b949e;
+        font-size: 1.1rem;
+        margin-bottom: 3rem;
+        text-align: center;
+        max-width: 36rem;
+        line-height: 1.5;
+      }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      max-width: 56rem;
-      width: 100%;
-    }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        max-width: 56rem;
+        width: 100%;
+      }
 
-    .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 0.75rem;
-      padding: 1.75rem;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.15s, transform 0.15s;
-    }
+      .card {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        text-decoration: none;
+        color: inherit;
+        transition:
+          border-color 0.15s,
+          transform 0.15s;
+      }
 
-    .card:hover { border-color: #58a6ff; transform: translateY(-2px); }
-    .card h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+      .card:hover {
+        border-color: #58a6ff;
+        transform: translateY(-2px);
+      }
+      .card h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
 
-    .tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      background: #21262d;
-      color: #8b949e;
-      padding: 0.2rem 0.6rem;
-      border-radius: 1rem;
-      margin-bottom: 0.75rem;
-    }
+      .tag {
+        display: inline-block;
+        font-size: 0.75rem;
+        background: #21262d;
+        color: #8b949e;
+        padding: 0.2rem 0.6rem;
+        border-radius: 1rem;
+        margin-bottom: 0.75rem;
+      }
 
-    .card p { color: #8b949e; font-size: 0.95rem; line-height: 1.5; }
+      .card p {
+        color: #8b949e;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
 
-    footer {
-      margin-top: 4rem;
-      color: #484f58;
-      font-size: 0.85rem;
-    }
+      footer {
+        margin-top: 4rem;
+        color: #484f58;
+        font-size: 0.85rem;
+      }
 
-    footer a { color: #58a6ff; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-  </style>
-</head>
-<body>
-  <h1>pyodide-bridge</h1>
-  <p class="subtitle">
-    Type-safe TypeScript bridges from annotated Python modules for Pyodide Web Workers.
-    Pick an example below to see it in action.
-  </p>
+      footer a {
+        color: #58a6ff;
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>pyodide-bridge</h1>
+    <p class="subtitle">
+      Type-safe TypeScript bridges from annotated Python modules for Pyodide Web Workers. Pick an
+      example below to see it in action.
+    </p>
 
-  <div class="cards">
-    <a class="card" href="./basic/">
-      <span class="tag">React</span>
-      <h2>Text Analyzer</h2>
-      <p>Word count, character frequency, and text summary powered by pure Python running in a Web Worker.</p>
-    </a>
+    <div class="cards">
+      <a class="card" href="./basic/">
+        <span class="tag">React</span>
+        <h2>Text Analyzer</h2>
+        <p>
+          Word count, character frequency, and text summary powered by pure Python running in a Web
+          Worker.
+        </p>
+      </a>
 
-    <a class="card" href="./scientific/">
-      <span class="tag">React + NumPy + SciPy + Matplotlib</span>
-      <h2>Signal Processing</h2>
-      <p>Generate, filter, and visualize signals using scientific Python libraries with SVG chart output.</p>
-    </a>
+      <a class="card" href="./scientific/">
+        <span class="tag">React + NumPy + SciPy + Matplotlib</span>
+        <h2>Signal Processing</h2>
+        <p>
+          Generate, filter, and visualize signals using scientific Python libraries with SVG chart
+          output.
+        </p>
+      </a>
 
-    <a class="card" href="./3d/">
-      <span class="tag">React + NumPy + Three.js</span>
-      <h2>3D Geometry</h2>
-      <p>Parametric surface mesh generation in Python, rendered in real time with Three.js WebGL.</p>
-    </a>
-  </div>
+      <a class="card" href="./3d/">
+        <span class="tag">React + NumPy + Three.js</span>
+        <h2>3D Geometry</h2>
+        <p>
+          Parametric surface mesh generation in Python, rendered in real time with Three.js WebGL.
+        </p>
+      </a>
+    </div>
 
-  <footer>
-    <a href="https://github.com/ar90n/pyodide-worker-bridge">GitHub</a> &middot; MIT License
-  </footer>
-</body>
+    <footer>
+      <a href="https://github.com/ar90n/pyodide-worker-bridge">GitHub</a> &middot; MIT License
+    </footer>
+  </body>
 </html>

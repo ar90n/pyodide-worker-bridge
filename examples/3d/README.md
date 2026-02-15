@@ -7,11 +7,11 @@ Python (numpy) generates parametric surface meshes (vertices, normals, face indi
 
 ## Surfaces
 
-| Surface | Description |
-|---------|-------------|
-| **Sphere** | Unit sphere via spherical coordinates |
-| **Torus** | Torus with configurable inner radius ratio |
-| **Trefoil Knot** | Tube surface along a trefoil knot curve |
+| Surface          | Description                                |
+| ---------------- | ------------------------------------------ |
+| **Sphere**       | Unit sphere via spherical coordinates      |
+| **Torus**        | Torus with configurable inner radius ratio |
+| **Trefoil Knot** | Tube surface along a trefoil knot curve    |
 
 ## Quick Start
 
@@ -37,12 +37,12 @@ npm run dev        # start Vite dev server
 
 ## Key Files
 
-| File | Purpose |
-|------|---------|
-| `python/src/geometry.py` | Parametric surface generation with numpy |
-| `src/App.tsx` | React UI + Three.js scene setup |
-| `src/generated/` | Auto-generated bridge (types, worker, hooks) |
-| `pyodide-bridge.config.mjs` | Bridge configuration |
+| File                        | Purpose                                      |
+| --------------------------- | -------------------------------------------- |
+| `python/src/geometry.py`    | Parametric surface generation with numpy     |
+| `src/App.tsx`               | React UI + Three.js scene setup              |
+| `src/generated/`            | Auto-generated bridge (types, worker, hooks) |
+| `pyodide-bridge.config.mjs` | Bridge configuration                         |
 
 ## Architecture Pattern
 

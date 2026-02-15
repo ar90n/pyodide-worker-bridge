@@ -5,17 +5,16 @@ import {
   useFilterSignal,
   usePlotSignal,
 } from "./generated/science.hooks";
-import type {
-  SignalResult,
-  FilterResult,
-  PlotKind,
-} from "./generated/science.types";
+import type { SignalResult, FilterResult, PlotKind } from "./generated/science.types";
 import "./App.css";
 
 function App() {
-  const { status, error: pyErr, api, retry } = usePyodide<
-    import("./generated/science.worker").BridgeAPI
-  >({
+  const {
+    status,
+    error: pyErr,
+    api,
+    retry,
+  } = usePyodide<import("./generated/science.worker").BridgeAPI>({
     worker: new URL("./generated/science.worker.ts", import.meta.url).href,
   });
 
@@ -90,16 +89,16 @@ function App() {
     <div className="app">
       <header className="header">
         <h1>pyodide-bridge scientific example</h1>
-        <p className="subtitle">
-          numpy + scipy + matplotlib running in your browser
-        </p>
+        <p className="subtitle">numpy + scipy + matplotlib running in your browser</p>
         <StatusBadge status={status} />
       </header>
 
       {status === "error" && (
         <div className="error-banner">
           <p>Failed to load Pyodide: {pyErr?.message}</p>
-          <button onClick={retry} className="btn btn-retry">Retry</button>
+          <button onClick={retry} className="btn btn-retry">
+            Retry
+          </button>
         </div>
       )}
 
@@ -111,10 +110,29 @@ function App() {
             <span className="step-tag">numpy</span>
           </h2>
           <div className="controls">
-            <Slider label="Frequency" value={frequency} min={1} max={50} step={1} unit="Hz" onChange={setFrequency} />
-            <Slider label="Noise Level" value={noiseLevel} min={0} max={1} step={0.05} onChange={setNoiseLevel} />
+            <Slider
+              label="Frequency"
+              value={frequency}
+              min={1}
+              max={50}
+              step={1}
+              unit="Hz"
+              onChange={setFrequency}
+            />
+            <Slider
+              label="Noise Level"
+              value={noiseLevel}
+              min={0}
+              max={1}
+              step={0.05}
+              onChange={setNoiseLevel}
+            />
           </div>
-          <button className="btn btn-action" onClick={handleGenerate} disabled={status !== "ready" || gen.isLoading}>
+          <button
+            className="btn btn-action"
+            onClick={handleGenerate}
+            disabled={status !== "ready" || gen.isLoading}
+          >
             {gen.isLoading ? "Generating..." : "Generate"}
           </button>
           {gen.error && <p className="error-text">{gen.error.message}</p>}
@@ -132,16 +150,26 @@ function App() {
             <span className="step-tag">scipy</span>
           </h2>
           <div className="controls">
-            <Slider label="Cutoff" value={cutoff} min={1} max={100} step={1} unit="Hz" onChange={setCutoff} />
+            <Slider
+              label="Cutoff"
+              value={cutoff}
+              min={1}
+              max={100}
+              step={1}
+              unit="Hz"
+              onChange={setCutoff}
+            />
           </div>
-          <button className="btn btn-action" onClick={handleFilter} disabled={!currentSignal || status !== "ready" || flt.isLoading}>
+          <button
+            className="btn btn-action"
+            onClick={handleFilter}
+            disabled={!currentSignal || status !== "ready" || flt.isLoading}
+          >
             {flt.isLoading ? "Filtering..." : "Filter"}
           </button>
           {flt.error && <p className="error-text">{flt.error.message}</p>}
           {currentFilter && (
-            <p className="result-info">
-              Butterworth LPF at {currentFilter.cutoff} Hz applied
-            </p>
+            <p className="result-info">Butterworth LPF at {currentFilter.cutoff} Hz applied</p>
           )}
         </section>
 
@@ -154,12 +182,22 @@ function App() {
           <div className="plot-kind-selector">
             {(["signal", "filter", "spectrum"] as PlotKind[]).map((k) => (
               <label key={k} className={`kind-option ${plotKind === k ? "active" : ""}`}>
-                <input type="radio" name="plotKind" value={k} checked={plotKind === k} onChange={() => setPlotKind(k)} />
+                <input
+                  type="radio"
+                  name="plotKind"
+                  value={k}
+                  checked={plotKind === k}
+                  onChange={() => setPlotKind(k)}
+                />
                 {k}
               </label>
             ))}
           </div>
-          <button className="btn btn-action" onClick={handlePlot} disabled={!currentSignal || status !== "ready" || plt.isLoading}>
+          <button
+            className="btn btn-action"
+            onClick={handlePlot}
+            disabled={!currentSignal || status !== "ready" || plt.isLoading}
+          >
             {plt.isLoading ? "Rendering..." : "Plot SVG"}
           </button>
           {plt.error && <p className="error-text">{plt.error.message}</p>}
@@ -186,19 +224,36 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 function Slider({
-  label, value, min, max, step, unit, onChange,
+  label,
+  value,
+  min,
+  max,
+  step,
+  unit,
+  onChange,
 }: {
-  label: string; value: number; min: number; max: number; step: number;
-  unit?: string; onChange: (v: number) => void;
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  unit?: string;
+  onChange: (v: number) => void;
 }) {
   return (
     <div className="slider-group">
       <label>
-        {label}: <strong>{value}{unit ? ` ${unit}` : ""}</strong>
+        {label}:{" "}
+        <strong>
+          {value}
+          {unit ? ` ${unit}` : ""}
+        </strong>
       </label>
       <input
         type="range"
-        min={min} max={max} step={step}
+        min={min}
+        max={max}
+        step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />

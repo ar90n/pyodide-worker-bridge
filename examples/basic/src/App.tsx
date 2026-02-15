@@ -24,18 +24,16 @@ const MODES: { value: AnalysisMode; label: string; description: string }[] = [
 ];
 
 function App() {
-  const { status, error: pyodideError, api, retry } = usePyodide<
-    import("./generated/engine.worker").BridgeAPI
-  >({
+  const {
+    status,
+    error: pyodideError,
+    api,
+    retry,
+  } = usePyodide<import("./generated/engine.worker").BridgeAPI>({
     worker: new URL("./generated/engine.worker.ts", import.meta.url).href,
   });
 
-  const {
-    result,
-    error: analysisError,
-    isLoading,
-    execute,
-  } = useAnalyze(api);
+  const { result, error: analysisError, isLoading, execute } = useAnalyze(api);
 
   const [text, setText] = useState(SAMPLE_TEXT);
   const [mode, setMode] = useState<AnalysisMode>("word_count");

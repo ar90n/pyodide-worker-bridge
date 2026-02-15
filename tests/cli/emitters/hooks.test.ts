@@ -10,17 +10,13 @@ const simpleIR: ModuleIR = {
       kind: "typeddict",
       name: "InputParams",
       total: false,
-      fields: [
-        { name: "query", type: { kind: "primitive", name: "str" }, required: true },
-      ],
+      fields: [{ name: "query", type: { kind: "primitive", name: "str" }, required: true }],
     },
     {
       kind: "typeddict",
       name: "Result",
       total: true,
-      fields: [
-        { name: "status", type: { kind: "reference", name: "Status" }, required: true },
-      ],
+      fields: [{ name: "status", type: { kind: "reference", name: "Status" }, required: true }],
     },
   ],
   functions: [

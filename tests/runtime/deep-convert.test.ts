@@ -28,26 +28,13 @@ describe("deepConvertMaps", () => {
   });
 
   it("converts Maps inside arrays", () => {
-    const items = [
-      new Map([["id", 1]]),
-      new Map([["id", 2]]),
-    ];
+    const items = [new Map([["id", 1]]), new Map([["id", 2]])];
     const result = deepConvertMaps(items);
     expect(result).toEqual([{ id: 1 }, { id: 2 }]);
   });
 
   it("handles deeply nested structures", () => {
-    const data = new Map([
-      [
-        "nested",
-        new Map([
-          [
-            "deep",
-            new Map([["value", 42]]),
-          ],
-        ]),
-      ],
-    ]);
+    const data = new Map([["nested", new Map([["deep", new Map([["value", 42]])]])]]);
     const result = deepConvertMaps(data);
     expect(result).toEqual({ nested: { deep: { value: 42 } } });
   });

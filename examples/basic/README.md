@@ -49,11 +49,11 @@ examples/basic/
 
 ## 使用している pyodide-bridge の機能
 
-| 機能 | 場所 |
-|------|------|
-| TypedDict → TypeScript type | `engine.types.ts` |
-| Literal → union type | `AnalysisMode` |
+| 機能                           | 場所                                                 |
+| ------------------------------ | ---------------------------------------------------- |
+| TypedDict → TypeScript type    | `engine.types.ts`                                    |
+| Literal → union type           | `AnalysisMode`                                       |
 | Required / Optional フィールド | `AnalysisParams.text` (required), `.mode` (optional) |
-| Worker 自動生成 | `engine.worker.ts` |
-| `usePyodide` Hook | `App.tsx` — Worker ライフサイクル管理 |
-| `useAnalyze` Hook | `App.tsx` — 関数呼び出し + 状態管理 |
+| Worker 自動生成                | `engine.worker.ts`                                   |
+| `usePyodide` Hook              | `App.tsx` — Worker ライフサイクル管理                |
+| `useAnalyze` Hook              | `App.tsx` — 関数呼び出し + 状態管理                  |

@@ -2,13 +2,24 @@
 
 import { usePyodide, createBridgeHook } from "pyodide-bridge/react";
 import type { BridgeAPI } from "./science.worker.js";
-import type { SignalParams, SignalResult, FilterParams, FilterResult, PlotParams, PlotResult } from "./science.types.js";
+import type {
+  SignalParams,
+  SignalResult,
+  FilterParams,
+  FilterResult,
+  PlotParams,
+  PlotResult,
+} from "./science.types.js";
 
 export { usePyodide };
 export type { BridgeAPI };
 
-export const useGenerateSignal = createBridgeHook<BridgeAPI, SignalParams, SignalResult>("generate_signal");
+export const useGenerateSignal = createBridgeHook<BridgeAPI, SignalParams, SignalResult>(
+  "generate_signal",
+);
 
-export const useFilterSignal = createBridgeHook<BridgeAPI, FilterParams, FilterResult>("filter_signal");
+export const useFilterSignal = createBridgeHook<BridgeAPI, FilterParams, FilterResult>(
+  "filter_signal",
+);
 
 export const usePlotSignal = createBridgeHook<BridgeAPI, PlotParams, PlotResult>("plot_signal");

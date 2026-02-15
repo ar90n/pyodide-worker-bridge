@@ -135,7 +135,9 @@ export function mergeCliArgs(
       modules: fileConfig.modules,
       react: cliArgs.react !== undefined ? cliArgs.react : fileConfig.react,
       bundler:
-        (cliArgs.bundler as BridgeConfig["bundler"]) || fileConfig.bundler || DEFAULT_CONFIG.bundler,
+        (cliArgs.bundler as BridgeConfig["bundler"]) ||
+        fileConfig.bundler ||
+        DEFAULT_CONFIG.bundler,
     };
   }
 
@@ -154,7 +156,6 @@ export function mergeCliArgs(
     pyodideVersion: cliArgs.pyodideVersion,
     modules: [{ input: cliArgs.input, outdir: cliArgs.outdir }],
     react: cliArgs.react !== undefined ? cliArgs.react : DEFAULT_CONFIG.react,
-    bundler:
-      (cliArgs.bundler as BridgeConfig["bundler"]) || (DEFAULT_CONFIG.bundler as "vite"),
+    bundler: (cliArgs.bundler as BridgeConfig["bundler"]) || (DEFAULT_CONFIG.bundler as "vite"),
   };
 }

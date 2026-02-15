@@ -95,43 +95,43 @@ pyodide-bridge/
 
 ## 2. ファイル命名規則
 
-| 種別 | 規則 | 例 |
-|------|------|-----|
-| TypeScript ソース | kebab-case | `worker-bootstrap.ts`, `deep-convert.ts` |
-| テストファイル | `{対象}.test.ts` | `deep-convert.test.ts` |
-| Python ソース | snake_case | `parser.py`, `test_parser.py` |
-| 設定ファイル | ツール公式の命名 | `tsconfig.json`, `vitest.config.ts` |
-| ドキュメント | kebab-case | `product-requirements.md` |
-| ディレクトリ | kebab-case | `comlink-helpers/` |
+| 種別              | 規則             | 例                                       |
+| ----------------- | ---------------- | ---------------------------------------- |
+| TypeScript ソース | kebab-case       | `worker-bootstrap.ts`, `deep-convert.ts` |
+| テストファイル    | `{対象}.test.ts` | `deep-convert.test.ts`                   |
+| Python ソース     | snake_case       | `parser.py`, `test_parser.py`            |
+| 設定ファイル      | ツール公式の命名 | `tsconfig.json`, `vitest.config.ts`      |
+| ドキュメント      | kebab-case       | `product-requirements.md`                |
+| ディレクトリ      | kebab-case       | `comlink-helpers/`                       |
 
 ## 3. エントリポイント
 
 ### npm パッケージエントリ
 
-| パス | 用途 | exports キー |
-|------|------|-------------|
-| `src/index.ts` | ルート公開 API（型定義の re-export） | `"."` |
-| `src/runtime/index.ts` | Runtime API | `"./runtime"` |
-| `src/react/index.ts` | React Hooks API | `"./react"` |
-| `src/cli/bin.ts` | CLI バイナリ | `"bin"` |
+| パス                   | 用途                                 | exports キー  |
+| ---------------------- | ------------------------------------ | ------------- |
+| `src/index.ts`         | ルート公開 API（型定義の re-export） | `"."`         |
+| `src/runtime/index.ts` | Runtime API                          | `"./runtime"` |
+| `src/react/index.ts`   | React Hooks API                      | `"./react"`   |
+| `src/cli/bin.ts`       | CLI バイナリ                         | `"bin"`       |
 
 ### ビルド出力
 
-| ソース | 出力 | 形式 |
-|--------|------|------|
-| `src/**/*.ts` | `dist/**/*.js` + `dist/**/*.d.ts` | ESM |
-| `parser/parser.py` | `dist/parser/parser.py` (コピー) | Python |
+| ソース             | 出力                              | 形式   |
+| ------------------ | --------------------------------- | ------ |
+| `src/**/*.ts`      | `dist/**/*.js` + `dist/**/*.d.ts` | ESM    |
+| `parser/parser.py` | `dist/parser/parser.py` (コピー)  | Python |
 
 ## 4. 設定ファイル一覧
 
-| ファイル | 用途 |
-|---------|------|
-| `package.json` | npm パッケージ定義 |
-| `tsconfig.json` | TypeScript コンパイラ設定 |
-| `tsup.config.ts` | tsup バンドル設定 |
-| `vitest.config.ts` | Vitest テスト設定 |
-| `.prettierrc` | Prettier コードフォーマッター |
-| `.gitignore` | Git 除外ファイル |
+| ファイル           | 用途                          |
+| ------------------ | ----------------------------- |
+| `package.json`     | npm パッケージ定義            |
+| `tsconfig.json`    | TypeScript コンパイラ設定     |
+| `tsup.config.ts`   | tsup バンドル設定             |
+| `vitest.config.ts` | Vitest テスト設定             |
+| `.prettierrc`      | Prettier コードフォーマッター |
+| `.gitignore`       | Git 除外ファイル              |
 
 ## 5. テストファイル配置ルール
 

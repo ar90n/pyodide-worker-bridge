@@ -1,8 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import {
-  usePyodide,
-  useGenerateMesh,
-} from "./generated/geometry.hooks";
+import { usePyodide, useGenerateMesh } from "./generated/geometry.hooks";
 import type { SurfaceKind, MeshResult } from "./generated/geometry.types";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -57,12 +54,7 @@ function initScene(canvas: HTMLCanvasElement): SceneRefs {
   return { renderer, scene, camera, controls, mesh: null, wireHelper: null, frameId };
 }
 
-function updateGeometry(
-  refs: SceneRefs,
-  data: MeshResult,
-  wireframe: boolean,
-  color: number,
-) {
+function updateGeometry(refs: SceneRefs, data: MeshResult, wireframe: boolean, color: number) {
   // Remove old mesh
   if (refs.mesh) {
     refs.scene.remove(refs.mesh);
@@ -78,14 +70,8 @@ function updateGeometry(
   }
 
   const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(data.positions, 3),
-  );
-  geometry.setAttribute(
-    "normal",
-    new THREE.Float32BufferAttribute(data.normals, 3),
-  );
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(data.positions, 3));
+  geometry.setAttribute("normal", new THREE.Float32BufferAttribute(data.normals, 3));
   geometry.setIndex(data.indices);
 
   const material = new THREE.MeshPhongMaterial({
@@ -133,9 +119,12 @@ const SURFACE_LABELS: Record<SurfaceKind, string> = {
 // ---------------------------------------------------------------------------
 
 function App() {
-  const { status, error: pyErr, api, retry } = usePyodide<
-    import("./generated/geometry.worker").BridgeAPI
-  >({
+  const {
+    status,
+    error: pyErr,
+    api,
+    retry,
+  } = usePyodide<import("./generated/geometry.worker").BridgeAPI>({
     worker: new URL("./generated/geometry.worker.ts", import.meta.url).href,
   });
 
@@ -207,12 +196,7 @@ function App() {
     if (gen.result && gen.result !== meshDataRef.current) {
       meshDataRef.current = gen.result;
       if (sceneRef.current) {
-        updateGeometry(
-          sceneRef.current,
-          gen.result,
-          wireframe,
-          SURFACE_COLORS[kind],
-        );
+        updateGeometry(sceneRef.current, gen.result, wireframe, SURFACE_COLORS[kind]);
       }
     }
   }, [gen.result, wireframe, kind]);
@@ -229,9 +213,7 @@ function App() {
     <div className="app">
       <header className="header">
         <h1>pyodide-bridge 3D example</h1>
-        <p className="subtitle">
-          numpy mesh generation + Three.js WebGL rendering
-        </p>
+        <p className="subtitle">numpy mesh generation + Three.js WebGL rendering</p>
         <StatusBadge status={status} />
       </header>
 
@@ -249,10 +231,7 @@ function App() {
           <h2>Surface</h2>
           <div className="surface-selector">
             {(["sphere", "torus", "trefoil_knot"] as SurfaceKind[]).map((k) => (
-              <label
-                key={k}
-                className={`surface-option ${kind === k ? "active" : ""}`}
-              >
+              <label key={k} className={`surface-option ${kind === k ? "active" : ""}`}>
                 <input
                   type="radio"
                   name="kind"
@@ -274,22 +253,8 @@ function App() {
             step={8}
             onChange={setResolution}
           />
-          <Slider
-            label="Scale"
-            value={scale}
-            min={0.5}
-            max={2.0}
-            step={0.1}
-            onChange={setScale}
-          />
-          <Slider
-            label="Param"
-            value={param}
-            min={0.1}
-            max={0.8}
-            step={0.05}
-            onChange={setParam}
-          />
+          <Slider label="Scale" value={scale} min={0.5} max={2.0} step={0.1} onChange={setScale} />
+          <Slider label="Param" value={param} min={0.1} max={0.8} step={0.05} onChange={setParam} />
 
           <div className="toggle-group">
             <input
@@ -338,11 +303,7 @@ function StatusBadge({ status }: { status: string }) {
     ready: "Ready",
     error: "Error",
   };
-  return (
-    <span className={`status-badge status-${status}`}>
-      {labels[status] ?? status}
-    </span>
-  );
+  return <span className={`status-badge status-${status}`}>{labels[status] ?? status}</span>;
 }
 
 function Slider({

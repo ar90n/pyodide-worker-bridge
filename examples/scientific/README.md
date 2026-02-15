@@ -48,12 +48,12 @@ examples/scientific/
 
 ## 使用している技術
 
-| 技術 | 用途 |
-|------|------|
-| numpy | 信号生成（`np.sin`, `np.random`）、FFT（`np.fft`） |
-| scipy | バターワースフィルタ（`scipy.signal.butter`, `sosfilt`） |
-| matplotlib | SVG チャートレンダリング（Agg バックエンド + `savefig(format='svg')`） |
-| pyodide-bridge | Python ↔ TypeScript 型安全ブリッジ、Worker 自動生成 |
+| 技術           | 用途                                                                   |
+| -------------- | ---------------------------------------------------------------------- |
+| numpy          | 信号生成（`np.sin`, `np.random`）、FFT（`np.fft`）                     |
+| scipy          | バターワースフィルタ（`scipy.signal.butter`, `sosfilt`）               |
+| matplotlib     | SVG チャートレンダリング（Agg バックエンド + `savefig(format='svg')`） |
+| pyodide-bridge | Python ↔ TypeScript 型安全ブリッジ、Worker 自動生成                    |
 
 ## matplotlib SVG パターン
 

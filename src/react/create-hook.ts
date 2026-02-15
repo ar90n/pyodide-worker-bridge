@@ -35,16 +35,10 @@ export interface BridgeHookReturn<TResult> {
  * @param methodName - The name of the method on the BridgeAPI
  * @returns A React Hook that takes the Comlink API proxy and returns execution state
  */
-export function createBridgeHook<
-  TApi,
-  TParams = void,
-  TResult = unknown,
->(
+export function createBridgeHook<TApi, TParams = void, TResult = unknown>(
   methodName: string & keyof TApi,
 ): (api: Comlink.Remote<TApi> | null) => BridgeHookReturn<TResult> {
-  return function useBridgeFunction(
-    api: Comlink.Remote<TApi> | null,
-  ): BridgeHookReturn<TResult> {
+  return function useBridgeFunction(api: Comlink.Remote<TApi> | null): BridgeHookReturn<TResult> {
     const [result, setResult] = useState<TResult | null>(null);
     const [error, setError] = useState<BridgeError | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +46,12 @@ export function createBridgeHook<
     const execute = useCallback(
       async (...args: unknown[]): Promise<void> => {
         if (!api) {
-          setError(new BridgeError("NOT_READY", "API is not ready. Wait for usePyodide status to be 'ready'."));
+          setError(
+            new BridgeError(
+              "NOT_READY",
+              "API is not ready. Wait for usePyodide status to be 'ready'.",
+            ),
+          );
           return;
         }
 

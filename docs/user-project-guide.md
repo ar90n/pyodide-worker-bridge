@@ -41,47 +41,47 @@ my-app/
 
 ### なぜ分離するか
 
-| 観点 | 混在 (`src/python/`) | 分離 (`python/`) |
-|------|---------------------|------------------|
-| Python テスト | pytest のルート設定が複雑 | `cd python && pytest` で完結 |
-| pyproject.toml | プロジェクトルートに置くと TS と混在 | python/ 内に自然に配置 |
-| .venv | src/ 内に仮想環境は違和感 | python/.venv で標準的 |
-| lint (ruff 等) | TS linter と Python linter の対象が交差 | 各ルートで独立して実行 |
-| CI ジョブ | 全部まとめて実行 | Python / TS を並列実行可能 |
+| 観点           | 混在 (`src/python/`)                    | 分離 (`python/`)             |
+| -------------- | --------------------------------------- | ---------------------------- |
+| Python テスト  | pytest のルート設定が複雑               | `cd python && pytest` で完結 |
+| pyproject.toml | プロジェクトルートに置くと TS と混在    | python/ 内に自然に配置       |
+| .venv          | src/ 内に仮想環境は違和感               | python/.venv で標準的        |
+| lint (ruff 等) | TS linter と Python linter の対象が交差 | 各ルートで独立して実行       |
+| CI ジョブ      | 全部まとめて実行                        | Python / TS を並列実行可能   |
 
 ## 3. 各ファイルの詳細
 
 ### pyodide-bridge.config.ts
 
 ```typescript
-import { defineConfig } from 'pyodide-bridge'
+import { defineConfig } from "pyodide-bridge";
 
 export default defineConfig({
-  pyodideVersion: '0.26.4',
+  pyodideVersion: "0.26.4",
   modules: [
     {
-      input: 'python/src/engine.py',   // Python ソースルートからの相対パス
-      outdir: 'src/generated',          // TS ソースルート内の生成先
+      input: "python/src/engine.py", // Python ソースルートからの相対パス
+      outdir: "src/generated", // TS ソースルート内の生成先
     },
   ],
-  bundler: 'vite',
+  bundler: "vite",
   react: true,
-})
+});
 ```
 
 ### vite.config.ts (alias 設定)
 
 ```typescript
-import { defineConfig } from 'vite'
-import path from 'path'
+import { defineConfig } from "vite";
+import path from "path";
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@python': path.resolve(__dirname, 'python/src'),
+      "@python": path.resolve(__dirname, "python/src"),
     },
   },
-})
+});
 ```
 
 生成される `.worker.ts` 内で Python ソースを `?raw` で読み込む際、この alias が使用される。
@@ -145,7 +145,7 @@ jobs:
   python:
     steps:
       - uses: actions/setup-python@v5
-        with: { python-version: '3.12' }
+        with: { python-version: "3.12" }
       - run: |
           cd python
           pip install -e ".[dev]"
@@ -156,7 +156,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
       - run: npm ci
-      - run: npx pyodide-bridge gen --check   # 生成ファイルが最新か
+      - run: npx pyodide-bridge gen --check # 生成ファイルが最新か
       - run: npm test
       - run: npm run build
 ```
@@ -189,12 +189,12 @@ my-app/
 ```typescript
 // pyodide-bridge.config.ts
 export default defineConfig({
-  pyodideVersion: '0.26.4',
+  pyodideVersion: "0.26.4",
   modules: [
-    { input: 'python/src/analysis.py',  outdir: 'src/generated' },
-    { input: 'python/src/transform.py', outdir: 'src/generated' },
+    { input: "python/src/analysis.py", outdir: "src/generated" },
+    { input: "python/src/transform.py", outdir: "src/generated" },
   ],
-})
+});
 ```
 
 各モジュールは**独立した Worker** として生成される。
@@ -206,6 +206,7 @@ export default defineConfig({
 v1 では `engine.py` が `from utils import helper` のように他ファイルを import することは未対応。
 
 **回避策**:
+
 - ブリッジ対象のモジュールは**自己完結した単一ファイル**にする
 - 共通ロジックがある場合は、ファイル内に直接記述する
 - ファイルが肥大化する場合は、複数の独立モジュールに分割する（各モジュールが独立した Worker になる）
@@ -236,5 +237,6 @@ python/**/__pycache__/
 ```
 
 **生成ファイルのコミットポリシー**:
+
 - **コミットする** (推奨): `--check` で CI 検証。Python 環境なしでも TS ビルド可能
 - **コミットしない**: CI で毎回生成。Python 環境が CI に必須

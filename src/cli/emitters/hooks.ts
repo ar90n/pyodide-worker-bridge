@@ -44,8 +44,7 @@ export function emitHooks(ir: ModuleIR): string {
 
 function emitFunctionHook(func: FunctionNode, _moduleName: string): string {
   const hookName = `use${toPascalCase(func.name)}`;
-  const paramsType =
-    func.params.length === 1 ? emitTypeRef(func.params[0].type) : "void";
+  const paramsType = func.params.length === 1 ? emitTypeRef(func.params[0].type) : "void";
   const returnType = emitTypeRef(func.returnType);
 
   const lines: string[] = [];
@@ -62,4 +61,3 @@ function toPascalCase(name: string): string {
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join("");
 }
-

@@ -41,6 +41,7 @@ pyodide-bridge は **3 層アーキテクチャ** を採用する。各層は独
 **責務**: Python ソースをパースし、TypeScript コードを生成する。開発時のみ使用。
 
 **パイプライン**:
+
 ```
 Python Source → [Python Parser] → Module IR → [Emitter] → TypeScript Files
                   (python3)        (JSON)      (Node.js)
@@ -48,18 +49,19 @@ Python Source → [Python Parser] → Module IR → [Emitter] → TypeScript Fil
 
 **コンポーネント**:
 
-| コンポーネント | 責務 |
-|--------------|------|
-| `cli/bin.ts` | CLI エントリポイント。引数解析、設定ファイル読み込み |
-| `cli/config.ts` | `pyodide-bridge.config.ts` のロードとバリデーション |
-| `cli/python-parser.ts` | `python3` 子プロセスを起動し、Python AST パーサースクリプトを実行 |
-| `cli/parser.py` | Python 側の AST パーサー。モジュール IR を JSON で stdout に出力 |
-| `cli/emitters/types.ts` | IR → `.types.ts` 生成 |
-| `cli/emitters/worker.ts` | IR → `.worker.ts` 生成 |
-| `cli/emitters/hooks.ts` | IR → `.hooks.ts` 生成 |
-| `cli/check.ts` | `--check` モード: 生成結果と既存ファイルの差分検出 |
+| コンポーネント           | 責務                                                              |
+| ------------------------ | ----------------------------------------------------------------- |
+| `cli/bin.ts`             | CLI エントリポイント。引数解析、設定ファイル読み込み              |
+| `cli/config.ts`          | `pyodide-bridge.config.ts` のロードとバリデーション               |
+| `cli/python-parser.ts`   | `python3` 子プロセスを起動し、Python AST パーサースクリプトを実行 |
+| `cli/parser.py`          | Python 側の AST パーサー。モジュール IR を JSON で stdout に出力  |
+| `cli/emitters/types.ts`  | IR → `.types.ts` 生成                                             |
+| `cli/emitters/worker.ts` | IR → `.worker.ts` 生成                                            |
+| `cli/emitters/hooks.ts`  | IR → `.hooks.ts` 生成                                             |
+| `cli/check.ts`           | `--check` モード: 生成結果と既存ファイルの差分検出                |
 
 **Python Parser との連携**:
+
 ```
 Node.js (CLI)                    Python (parser.py)
      │                                │
@@ -81,12 +83,12 @@ Node.js (CLI)                    Python (parser.py)
 
 **コンポーネント**:
 
-| コンポーネント | 責務 |
-|--------------|------|
+| コンポーネント                | 責務                                                    |
+| ----------------------------- | ------------------------------------------------------- |
 | `runtime/worker-bootstrap.ts` | Pyodide CDN ロード、パッケージインストール、Python 実行 |
-| `runtime/deep-convert.ts` | `Map` → plain object 再帰変換 |
-| `runtime/error.ts` | `BridgeError` クラス、エラー辞書パターン検出 |
-| `runtime/comlink-helpers.ts` | Proxy-safe setState ラッパー |
+| `runtime/deep-convert.ts`     | `Map` → plain object 再帰変換                           |
+| `runtime/error.ts`            | `BridgeError` クラス、エラー辞書パターン検出            |
+| `runtime/comlink-helpers.ts`  | Proxy-safe setState ラッパー                            |
 
 **依存関係**: `comlink` (peer dependency)
 
@@ -96,10 +98,10 @@ Node.js (CLI)                    Python (parser.py)
 
 **コンポーネント**:
 
-| コンポーネント | 責務 |
-|--------------|------|
+| コンポーネント         | 責務                                  |
+| ---------------------- | ------------------------------------- |
 | `react/use-pyodide.ts` | Worker 生成・初期化・状態管理・再試行 |
-| `react/create-hook.ts` | 関数別 Hook のファクトリ |
+| `react/create-hook.ts` | 関数別 Hook のファクトリ              |
 
 **依存関係**: `react` (peer dependency), `comlink` (peer dependency)
 
@@ -167,46 +169,46 @@ CLI パイプラインの中心となるデータ構造。Python Parser が出�
 
 ```typescript
 interface ModuleIR {
-  moduleName: string
-  types: TypeNode[]
-  functions: FunctionNode[]
-  packages: string[]
+  moduleName: string;
+  types: TypeNode[];
+  functions: FunctionNode[];
+  packages: string[];
 }
 
-type TypeNode = TypeDictNode | LiteralAliasNode
+type TypeNode = TypeDictNode | LiteralAliasNode;
 
 interface TypeDictNode {
-  kind: 'typeddict'
-  name: string
-  total: boolean
-  fields: FieldNode[]
+  kind: "typeddict";
+  name: string;
+  total: boolean;
+  fields: FieldNode[];
 }
 
 interface FieldNode {
-  name: string
-  type: TypeRef
-  required: boolean  // total + Required/NotRequired で決定
+  name: string;
+  type: TypeRef;
+  required: boolean; // total + Required/NotRequired で決定
 }
 
 interface LiteralAliasNode {
-  kind: 'literal'
-  name: string
-  values: (string | number | boolean)[]
+  kind: "literal";
+  name: string;
+  values: (string | number | boolean)[];
 }
 
 interface FunctionNode {
-  name: string
-  params: { name: string; type: TypeRef }[]
-  returnType: TypeRef
+  name: string;
+  params: { name: string; type: TypeRef }[];
+  returnType: TypeRef;
 }
 
 type TypeRef =
-  | { kind: 'primitive'; name: 'int' | 'float' | 'str' | 'bool' | 'None' }
-  | { kind: 'list'; element: TypeRef }
-  | { kind: 'dict'; key: TypeRef; value: TypeRef }
-  | { kind: 'optional'; inner: TypeRef }
-  | { kind: 'literal'; values: (string | number | boolean)[] }
-  | { kind: 'reference'; name: string }  // 同一モジュール内の型参照
+  | { kind: "primitive"; name: "int" | "float" | "str" | "bool" | "None" }
+  | { kind: "list"; element: TypeRef }
+  | { kind: "dict"; key: TypeRef; value: TypeRef }
+  | { kind: "optional"; inner: TypeRef }
+  | { kind: "literal"; values: (string | number | boolean)[] }
+  | { kind: "reference"; name: string }; // 同一モジュール内の型参照
 ```
 
 ## 5. パッケージ構成
@@ -224,6 +226,7 @@ pyodide-bridge (npm package)
 ```
 
 **package.json exports**:
+
 ```json
 {
   "name": "pyodide-bridge",
@@ -241,43 +244,46 @@ pyodide-bridge (npm package)
 ## 6. 依存関係
 
 ### 本体依存 (dependencies)
+
 - なし（ランタイム依存を最小化）
 
 ### ピア依存 (peerDependencies)
-| パッケージ | 用途 | 必須/オプション |
-|-----------|------|---------------|
-| `comlink` | Worker ↔ Main Thread 通信 | 必須 |
-| `react` | React Hooks | オプション（`react` エントリ使用時のみ） |
-| `pyodide` | 型定義参照 | オプション |
+
+| パッケージ | 用途                      | 必須/オプション                          |
+| ---------- | ------------------------- | ---------------------------------------- |
+| `comlink`  | Worker ↔ Main Thread 通信 | 必須                                     |
+| `react`    | React Hooks               | オプション（`react` エントリ使用時のみ） |
+| `pyodide`  | 型定義参照                | オプション                               |
 
 ### 開発依存 (devDependencies)
-| パッケージ | 用途 |
-|-----------|------|
-| `typescript` | ビルド |
-| `tsup` | バンドル |
-| `vitest` | テスト |
+
+| パッケージ    | 用途           |
+| ------------- | -------------- |
+| `typescript`  | ビルド         |
+| `tsup`        | バンドル       |
+| `vitest`      | テスト         |
 | `@types/node` | Node.js 型定義 |
 
 ## 7. テスト戦略
 
 ### ユニットテスト
 
-| 対象 | テスト内容 |
-|------|----------|
-| Python Parser | Python ソース → ModuleIR の変換正確性 |
-| Type Emitter | ModuleIR → `.types.ts` のスナップショットテスト |
-| Worker Emitter | ModuleIR → `.worker.ts` のスナップショットテスト |
-| Hooks Emitter | ModuleIR → `.hooks.ts` のスナップショットテスト |
-| deepConvertMaps | Map/Array/プリミティブの変換 |
-| BridgeError | エラー辞書パターンの検出 |
-| Config loader | 設定ファイルのバリデーション |
+| 対象            | テスト内容                                       |
+| --------------- | ------------------------------------------------ |
+| Python Parser   | Python ソース → ModuleIR の変換正確性            |
+| Type Emitter    | ModuleIR → `.types.ts` のスナップショットテスト  |
+| Worker Emitter  | ModuleIR → `.worker.ts` のスナップショットテスト |
+| Hooks Emitter   | ModuleIR → `.hooks.ts` のスナップショットテスト  |
+| deepConvertMaps | Map/Array/プリミティブの変換                     |
+| BridgeError     | エラー辞書パターンの検出                         |
+| Config loader   | 設定ファイルのバリデーション                     |
 
 ### 統合テスト
 
-| シナリオ | テスト内容 |
-|---------|----------|
-| E2E コード生成 | Python ファイル → CLI 実行 → 生成ファイル検証 |
-| --check モード | 最新/非最新ケースでの終了コード検証 |
+| シナリオ       | テスト内容                                        |
+| -------------- | ------------------------------------------------- |
+| E2E コード生成 | Python ファイル → CLI 実行 → 生成ファイル検証     |
+| --check モード | 最新/非最新ケースでの終了コード検証               |
 | 複数モジュール | config ファイルで複数モジュールを指定して一括生成 |
 
 ### テストフレームワーク

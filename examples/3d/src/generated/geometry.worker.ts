@@ -29,7 +29,7 @@ const api: BridgeAPI = {
     const jsResult = deepConvertMaps<MeshResult>(pyResult.toJs());
     detectBridgeError(jsResult);
     return jsResult;
-  }
+  },
 };
 
 init().then(() => {
