@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            examples/*/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Root library
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      # Examples
+      - name: Build example — basic
+        working-directory: examples/basic
+        run: |
+          npm ci
+          npm run generate
+          npm run build
+
+      - name: Build example — scientific
+        working-directory: examples/scientific
+        run: |
+          npm ci
+          npm run generate
+          npm run build
+
+      - name: Build example — 3d
+        working-directory: examples/3d
+        run: |
+          npm ci
+          npm run generate
+          npm run build

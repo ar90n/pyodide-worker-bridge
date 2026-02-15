@@ -1,0 +1,90 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            examples/*/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Build root library (examples depend on dist/)
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      # Build examples with GitHub Pages base paths
+      - name: Build example — basic
+        working-directory: examples/basic
+        run: |
+          npm ci
+          npm run generate
+          npx tsc --noEmit
+          npx vite build --base=/pyodide-worker-bridge/basic/
+
+      - name: Build example — scientific
+        working-directory: examples/scientific
+        run: |
+          npm ci
+          npm run generate
+          npx tsc --noEmit
+          npx vite build --base=/pyodide-worker-bridge/scientific/
+
+      - name: Build example — 3d
+        working-directory: examples/3d
+        run: |
+          npm ci
+          npm run generate
+          npx tsc --noEmit
+          npx vite build --base=/pyodide-worker-bridge/3d/
+
+      # Assemble site
+      - name: Assemble site
+        run: |
+          mkdir -p _site/basic _site/scientific _site/3d
+          cp pages/index.html _site/index.html
+          cp -r examples/basic/dist/* _site/basic/
+          cp -r examples/scientific/dist/* _site/scientific/
+          cp -r examples/3d/dist/* _site/3d/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
